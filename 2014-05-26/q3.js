@@ -1,3 +1,4 @@
+//这题我不太明白啊是这个意思吗，也木有测试。
 function router() {
 	var url = location.href;
 	var action = url.split("#");
