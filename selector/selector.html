@@ -6,19 +6,25 @@
 	<link rel="stylesheet" href="css/selector.css" />	
 </head>
 <body>
-	<div class="selector" name="choice">
-		<div>A</div>
-		<div>B</div>
-		<div>C</div>
-		<div>D</div>
-	</div>	
+	<select id="selector1" name="choice1">
+		<option value="A">A</option>
+		<option value="B">B</option>
+		<option value="C">C</option>
+		<option value="D">D</option>
+	</select>	
 	<br/><br/>
-	<div class="selector" name="choice2">
-		<div>1</div>
-		<div>2</div>
-		<div>3</div>
-		<div>4</div>
-	</div>	
+	<select id="selector2" name="choice2">
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+		<option value="4">4</option>
+	</option>
+	
+	<script type="text/javascript" src="js/utilities.js"></script>
 	<script type="text/javascript" src="js/selector.js"></script>
+	<script>
+		select("selector1");
+		select("selector2");
+	</script>
 </body>
 </html>
