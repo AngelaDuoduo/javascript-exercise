@@ -1,13 +1,15 @@
+//构造时调用的函数
 function select(selector_id) {
 	
 	var selector = $("#" + selector_id)[0];	
 	var newSelector = createSelector(selector);
 	selector.parentNode.insertBefore(newSelector, selector);
-	addClass(selector, "hide");
+	addClass(selector, "hide");//将原有select元素隐藏
 	addChooseListenerForSelector(selector, newSelector);
 	
 }
 
+//参数为select元素，并根据select的option创建自定义select
 function createSelector(selector) {
 	
 	
@@ -51,6 +53,7 @@ function createSelector(selector) {
 	
 }
 
+//事件监听与数据同步
 function addChooseListenerForSelector(selector, newSelector) {
 
 	var input = getClassChilds(newSelector, "input_container");
@@ -78,6 +81,7 @@ function addChooseListenerForSelector(selector, newSelector) {
 		var choice = event.target.innerText;
 		value_show_box.innerText = choice;
 		
+		//同步原select元素的value
 		var options = selector.getElementsByTagName("option");
 		for (var i = 0; i < options.length; i++) {
 			if(options[i].innerText.trim() == choice) {
@@ -93,6 +97,7 @@ function addChooseListenerForSelector(selector, newSelector) {
 	
 	}); 	
 }
+//改变select的value
 function changeValue(selector, newValue) {
 		
 	var newSelector = selector.previousSibling;
