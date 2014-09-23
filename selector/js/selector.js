@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 $(function() {	
 	
 	//return self-defined object array.
@@ -33,6 +34,29 @@ $(function() {
 								"<div class='shadow-select-sword'></div>" +
 								"<div class='shadow-select-choice-list'>",
 			newSelect;
+=======
+//构造时调用的函数
+function select(selector_id) {
+	
+	var selector = $("#" + selector_id)[0];	
+	var newSelector = createSelector(selector);
+	selector.parentNode.insertBefore(newSelector, selector);
+	addClass(selector, "hide");//将原有select元素隐藏
+	addChooseListenerForSelector(selector, newSelector);
+	
+}
+
+//参数为select元素，并根据select的option创建自定义select
+function createSelector(selector) {
+	
+	
+	var newSelector = document.createElement("div");
+	addClass(newSelector, "selector");
+	
+	var inputContainer = document.createElement("div");
+	addClass(inputContainer, "input_container");	
+	
+>>>>>>> ccb1fdd8a3aa284e4252bff7929b408ad706141a
 		
 		optionDoms = self.find("option");
 		for (var i = 0, size = optionDoms.length; i < size; i++) {
@@ -46,6 +70,7 @@ $(function() {
 		self.hide();
 		newSelect.children(".shadow-select-choice-list").hide();
 
+<<<<<<< HEAD
 		return {		
 			getProtoSelect: function() { return self.get();},
 			getShadowSelect: function() { return newSelect;},
@@ -55,6 +80,10 @@ $(function() {
 			setValue: setValue,
 			getValue: getValue
 		};
+=======
+//事件监听与数据同步
+function addChooseListenerForSelector(selector, newSelector) {
+>>>>>>> ccb1fdd8a3aa284e4252bff7929b408ad706141a
 
 	}
 	
@@ -99,10 +128,18 @@ $(function() {
 			domOptions = $(dom).children("option"),
 			selectOptions = select.children(".shadow-select-option");
 		
+<<<<<<< HEAD
 		for (var i = 0, size = domOptions.length; i < size; i++) {
 			
 			if (domOptions[i].text() === OptionText) {
 				domOptions[i].remove();
+=======
+		//同步原select元素的value
+		var options = selector.getElementsByTagName("option");
+		for (var i = 0; i < options.length; i++) {
+			if(options[i].innerText.trim() == choice) {
+				options[i].selected = true;
+>>>>>>> ccb1fdd8a3aa284e4252bff7929b408ad706141a
 			}
 			if (selectOptions[i].text() === optionText) {
 				selectOptions[i].remove();
@@ -124,6 +161,16 @@ $(function() {
 		}
 		return false; 		
 		
+<<<<<<< HEAD
+=======
+		removeClass(list, "fadeIn");
+		addClass(list, "hide");
+	
+	}); 	
+}
+//改变select的value
+function changeValue(selector, newValue) {
+>>>>>>> ccb1fdd8a3aa284e4252bff7929b408ad706141a
 		
 	}
 	
