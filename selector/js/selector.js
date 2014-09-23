@@ -1,114 +1,162 @@
-function select(selector_id) {
+$(function() {	
 	
-	var selector = $("#" + selector_id)[0];	
-	var newSelector = createSelector(selector);
-	selector.parentNode.insertBefore(newSelector, selector);
-	addClass(selector, "hide");
-	addChooseListenerForSelector(selector, newSelector);
-	
-}
+	//return self-defined object array.
+	$.fn.ShadowSelect = function(cfg) {
+		_shadowSelects = [];
+		cfg = $.extend(true, {}, $.fn.ShadowSelect.default, cfg);
+		
+		this.each(function(index, selectDom) {
+			var singleSelect = $.fn.ShadowSelect.init.apply(selectDom,[]);
+			singleSelect.setStyle(cfg);
+			_shadowSelects.push(singleSelect);
+		});
+		
+		return _shadowSelects;		
+	};	
 
-function createSelector(selector) {
-	
-	
-	var newSelector = document.createElement("div");
-	addClass(newSelector, "selector");
-	
-	var inputContainer = document.createElement("div");
-	addClass(inputContainer, "input_container");	
-	
-		
-	
-	var input = document.createElement("div");	
-	addClass(input, "selector_input");		
-	
-	
-	var button = document.createElement("div");
-	addClass(button, "sword");
-	
-	inputContainer.appendChild(input);
-	inputContainer.appendChild(button);
-	newSelector.appendChild(inputContainer);
-	
-	
-	
-	var choiceList = document.createElement("div");
-	addClass(choiceList, "choice_list hide");
-	
-	
-	var options = selector.getElementsByTagName("option");
-	for (var i = 0; i < options.length; i++) {
-		var newOption = document.createElement("div");
-		newOption.innerText = options[i].innerText;
-		addClass(newOption, "option");
-		choiceList.appendChild(newOption);
-	}	
-	
-	
-	newSelector.appendChild(choiceList);
-	
-	return newSelector;
-	
-}
+	$.fn.ShadowSelect.default = {
+		width: "150px",
+		height: "30px",
+		display: "inline-block",
+		lineHeight: "1.2",
+		maxHeight: "200px"		
+	};
 
-function addChooseListenerForSelector(selector, newSelector) {
 
-	var input = getClassChilds(newSelector, "input_container");
-	var target = input[0];
-	var list = getClassChilds(newSelector, "choice_list")[0];
-	var value_show_box = getClassChilds(target, "selector_input")[0];
-	var form_input = target.getElementsByTagName("input")[0];
+	$.fn.ShadowSelect.init = function() {
+
+		var self = $(this),
+			optionDoms,
+			options = [],
+			newSelectHtml = "<div class='shadow-select'>" +
+								"<div class='shadow-select-input'></div>" +
+								"<div class='shadow-select-sword'></div>" +
+								"<div class='shadow-select-choice-list'>",
+			newSelect;
+		
+		optionDoms = self.find("option");
+		for (var i = 0, size = optionDoms.length; i < size; i++) {
+			
+			var text = optionDoms[i].text;
+			newSelectHtml =  newSelectHtml + "<div class='shadow-select-option'>" + text + "</div>";
+		}
+		newSelectHtml += "</div></div>";
+		newSelect = $(newSelectHtml).insertBefore(self);
+		bindEvent(self, newSelect);
+		self.hide();
+		newSelect.children(".shadow-select-choice-list").hide();
+
+		return {		
+			getProtoSelect: function() { return self.get();},
+			getShadowSelect: function() { return newSelect;},
+			setStyle: setStyle,
+			addOption: addOption,
+			removeOption: removeOption,
+			setValue: setValue,
+			getValue: getValue
+		};
+
+	}
 	
-	target.addEventListener("click", function(event) {
+	var setStyle = function(cfg) {
+		
+		var self = this.getShadowSelect();
+		if (cfg) {
+			self.css("width", cfg.width);
+			self.css("height", cfg.height);
+			self.css("display", "inline-block");
+			self.find(".shadow-select-input, .shadow-select-option").css("line-height", cfg.lineHeight) 
+			self.children(".shadow-select-choice-list").css("max-height", cfg.maxHeight);
+		}
+	}
 	
-		if (!hasClass(list, "hide")) {
+	var addOption = function(newOptionText, newOptionValue) {
 		
-			addClass(list, "hide");
+		var dom = this.getProtoSelect(),
+			select = this.getShadowSelect(),
+			domOptions = $(dom).children("option");
 		
-		} else{
-		
-			removeClass(list, "hide");	
-			addClass(list, "fadeIn");		
+		for (var i = 0, size = domOptions.length; i < size; i++) {
+			
+			if (domOptions[i].text() === newOptionText) {
+				return false;
+			}
+		}
+		if (newOptionValue) {
+			$("<option value='" + newOptionValue + "'>" + newOptionText + "</option>").appendTo($(dom));			
+		} else {
+			$("<option>" + newOptionText + "</option>").appendTo($(dom));
 		}		
-	
-	});
-	
-	list.addEventListener("click", function(event) {
-	
-		var choice = event.target.innerText;
-		value_show_box.innerText = choice;
+		$("<div class='shadow-select-option'>" + newOptionText + "</div>" ).appendTo(select);
+		return true;	
 		
-		var options = selector.getElementsByTagName("option");
-		for (var i = 0; i < options.length; i++) {
-			if(options[i].innerText.trim() == choice) {
-				options[i].selected = true;
+	}
+	
+	var removeOption = function(optionText) {
+		
+		var dom = this.getProtoSelect(),
+			select = this.getShadowSelect(),
+			domOptions = $(dom).children("option"),
+			selectOptions = select.children(".shadow-select-option");
+		
+		for (var i = 0, size = domOptions.length; i < size; i++) {
+			
+			if (domOptions[i].text() === OptionText) {
+				domOptions[i].remove();
 			}
-			else {
-				options[i].selected = false;
+			if (selectOptions[i].text() === optionText) {
+				selectOptions[i].remove();
+			}
+		}		
+	};
+	
+	var setValue = function(value) {
+
+		var dom = this.getProtoSelect(),
+			select = this.getShadowSelect(),
+			domOptions = $(dom).children("option");
+		for (var i = 0, size = domOptions.length; i < size; i++) {
+			if (domOptions[i].text === value) {
+				$(dom).val(value);
+				select.children(".shadow-select-input").text(value);
+				return true;
 			}
 		}
+		return false; 		
 		
-		removeClass(list, "fadeIn");
-		addClass(list, "hide");
-	
-	}); 	
-}
-function changeValue(selector, newValue) {
 		
-	var newSelector = selector.previousSibling;
-	var inputContainer = getClassChilds(newSelector, "input_container")[0];	
+	}
 	
-	var options = selector.getElementsByTagName("option");
-	for (var i = 0; i < options.length; i++) {
-			if(options[i].innerText.trim() == newValue) {
-				selector.value = newValue;
-				getClassChilds(inputContainer, "selector_input")[0].innerText = newValue;
-				break;
-			}
-		}
+	var getValue = function() {
+	
+		return this.getProtoSelect().value;
+	
+	};
+	
+	var bindEvent = function(protoSelect, shadowSelect) {
+		
+		$(".shadow-select-sword").on("click", function() {
+			
+			$(this).parent().children(".shadow-select-choice-list").show();
+		});
+		
+		$(".shadow-select-option").on("click", function() {
+			
+			$(this).parent().parent().children(".shadow-select-input").text($(this).text());
+			$(protoSelect.val($(this).text()));
+			$(this).parent().hide();
+			
+		});
+		
+		$(document).click(function() {
+			$(this).parent().children(".shadow-select-choice-list").hide();
+		})
+		
+	}
+
+});
 	
 
-}
 
 
 

@@ -1,19 +1,11 @@
 body {
 	background-color: #e0e5e8;
+	font-family: Arial, sans-serif;
 }
-.selector {
-	width: 150px;
-	font-family: Arial, sans-serif;	
+.shadow-select {
 	position: relative;	
 }
-.input_container {
-
-	width: 150px;
-	height:30px;
-	position: relative;
-}
-.selector_input {
-	
+.shadow-select-input{	
 	border: 1px solid #74b2c2;
 	height: 25px;
 	width: 135px;
@@ -21,11 +13,9 @@ body {
 	color: #343d3d;
 	font-size: 20px;
 	border-radius: 5px;
-	background-color: white;
-	
+	background-color: white;	
 }
-.sword {
-
+.shadow-select-sword {
 	position: absolute;
 	right: 0;
 	top: 8px;
@@ -36,40 +26,29 @@ body {
 	border-right: 12px solid transparent;
 	cursor: pointer;
 }
-.hide {
-	display: none;
-}
-.choice_list {
-
+.shadow-select-choice-list {
 	margin-top: -3px;
 	border: 1px solid #507480;
 	border-top: none;	
-	height: 0;
 	width: 147px;
 	overflow: hidden;
 	position: absolute;
 	left: 2px;
 	top:31px;
 	background-color: white;
-	z-index: 2;
-	
+	z-index: 10;
 }
-.option {
+.shadow-select-option {
+	width: 100%;
 	padding: 1px 2px;
 	font-size: 12px;
-	font-family: Arial, sans-serif;
-	
+	background-color: white;
+	color: black;
+	cursor: pointer;
+	z-index: 100;
 }
-.option:hover {
+.shadow-select-option:hover {
 	background-color: #7cb2c2;
 }
-.fadeIn{
-	height: 80px;
-	//transition: height 2s;
-	//-moz-transition: height 2s; 
-	//-webkit-transition: height 2s; 
-	//-o-transition: height 2s; 
-	
-	overflow: scroll;
-}
+
 

@@ -2,8 +2,9 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Selector | div</title>
-	<link rel="stylesheet" href="css/selector.css" />	
+	<link rel="stylesheet" href="css/selector.css" />
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="js/selector.js"></script>		
 </head>
 <body>
 	<select id="selector1" name="choice1">
@@ -18,13 +19,13 @@
 		<option value="2">2</option>
 		<option value="3">3</option>
 		<option value="4">4</option>
-	</option>
-	
-	<script type="text/javascript" src="js/utilities.js"></script>
-	<script type="text/javascript" src="js/selector.js"></script>
-	<script>
-		select("selector1");
-		select("selector2");
-	</script>
+	</select>
 </body>
 </html>
+
+<script>
+$(document).ready(function() {
+	var selects = $("#selector1, #selector2").ShadowSelect();
+	selects[1].setValue("2");
+});	
+</script>
